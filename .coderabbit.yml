@@ -1,0 +1,85 @@
+# CodeRabbit Configuration for AgenticAI Lab
+# AI-Powered Code Review Settings
+
+# Review settings
+reviews:
+  # Enable line-by-line reviews
+  line_comments: true
+  
+  # Enable security vulnerability detection
+  security: true
+  
+  # Enable performance optimization suggestions
+  performance: true
+  
+  # Enable code quality checks
+  quality: true
+  
+  # Enable best practices recommendations
+  best_practices: true
+
+# Language-specific settings
+languages:
+  python:
+    # FastAPI and backend code
+    frameworks: ["fastapi", "pydantic", "sqlalchemy"]
+    linting: true
+    type_checking: true
+    
+  typescript:
+    # Next.js frontend code
+    frameworks: ["nextjs", "react", "tailwindcss"]
+    linting: true
+    type_checking: true
+    
+  javascript:
+    # General JS code
+    linting: true
+    
+  yaml:
+    # Docker and configuration files
+    linting: true
+
+# File patterns to review
+include_patterns:
+  - "**/*.py"
+  - "**/*.ts"
+  - "**/*.tsx"
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.yml"
+  - "**/*.yaml"
+  - "**/*.json"
+  - "**/Dockerfile*"
+  - "**/*.md"
+
+# File patterns to exclude from review
+exclude_patterns:
+  - "node_modules/**"
+  - "__pycache__/**"
+  - ".next/**"
+  - "dist/**"
+  - "build/**"
+  - "*.log"
+  - "data/**"
+  - "models/**"
+  - "storage/**"
+
+# AI-specific review focus areas
+focus_areas:
+  - "AI model integration"
+  - "Docker container security"
+  - "API endpoint security"
+  - "Database query optimization"
+  - "Error handling"
+  - "Authentication and authorization"
+  - "Performance bottlenecks"
+  - "Memory usage optimization"
+  - "Async/await patterns"
+  - "Type safety"
+
+# Custom prompts for AI review
+custom_prompts:
+  ai_integration: "Review AI model integration patterns, LLM API calls, and error handling for AI services"
+  docker_security: "Check Docker configurations for security best practices and resource limits"
+  performance: "Analyze code for performance issues, especially in AI inference and database operations"

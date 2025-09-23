@@ -140,6 +140,16 @@ AgenticAILab/
 - **System Uptime**: 99.9%
 - **Content Quality**: 95%+ human approval rate
 
+## 🤖 AI Code Review
+
+This project uses **CodeRabbit AI** for automated code reviews:
+- 🔍 **Intelligent PR Reviews** - AI-powered line-by-line analysis
+- 🛡️ **Security Scanning** - Automated vulnerability detection  
+- ⚡ **Performance Optimization** - Smart suggestions for better code
+- 🎯 **AI Integration Focus** - Specialized review for LLM and Docker code
+
+CodeRabbit provides **free reviews for public repositories** and integrates seamlessly with our development workflow.
+
 ## 🤝 Contributing
 
 Please read our [Contributing Guidelines](docs/CONTRIBUTING.md) and [Code of Conduct](docs/CODE_OF_CONDUCT.md).
