@@ -1,0 +1,8 @@
+frontend.historyMaxPageSize:
+  - value: 1000
+    constraints: {}
+frontend.defaultVisibilityIndexName:
+  - value: es
+    constraints: {}
+
+

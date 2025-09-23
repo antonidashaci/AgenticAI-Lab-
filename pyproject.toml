@@ -1,0 +1,260 @@
+[tool.poetry]
+name = "agenticai-lab"
+version = "0.1.0"
+description = "AI-Powered Content Creation Platform"
+authors = ["AgenticAI Lab Team <team@agenticailab.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/yourusername/AgenticAILab"
+repository = "https://github.com/yourusername/AgenticAILab"
+documentation = "https://docs.agenticailab.com"
+keywords = ["ai", "content-creation", "automation", "agents", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Video",
+]
+packages = [{include = "agenticai"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<=3.13"
+
+# Web Framework
+fastapi = "^0.104.1"
+uvicorn = {extras = ["standard"], version = "^0.24.0"}
+pydantic = "^2.5.0"
+pydantic-settings = "^2.1.0"
+
+# Database & Storage
+sqlalchemy = "^2.0.23"
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+redis = "^5.0.1"
+psycopg2-binary = "^2.9.9"
+
+# AI & ML
+openai = "^1.6.1"
+anthropic = "^0.8.1"
+langchain = "^0.1.0"
+langchain-community = "^0.0.10"
+langchain-openai = "^0.0.5"
+crewai = "^0.30.0"
+guidance = "^0.1.10"
+transformers = "^4.36.0"
+torch = "^2.1.0"
+diffusers = "^0.24.0"
+accelerate = "^0.25.0"
+sentence-transformers = "^2.2.2"
+qdrant-client = "^1.7.0"
+
+# Audio Processing
+whisper = "^1.1.10"
+pydub = "^0.25.1"
+librosa = "^0.10.1"
+soundfile = "^0.12.1"
+
+# Image Processing
+pillow = "^10.1.0"
+opencv-python = "^4.8.1.78"
+imageio = "^2.33.1"
+matplotlib = "^3.8.2"
+
+# Video Processing
+moviepy = "^1.0.3"
+ffmpeg-python = "^0.2.0"
+
+# Web Scraping & HTTP
+httpx = "^0.26.0"
+aiohttp = "^3.9.1"
+beautifulsoup4 = "^4.12.2"
+selenium = "^4.16.0"
+requests = "^2.31.0"
+
+# Workflow & Task Queue
+temporalio = "^1.5.1"
+celery = "^5.3.4"
+kombu = "^5.3.4"
+pika = "^1.3.2"
+
+# Authentication & Security
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.6"
+
+# Configuration & Environment
+python-dotenv = "^1.0.0"
+pyyaml = "^6.0.1"
+toml = "^0.10.2"
+
+# Monitoring & Logging
+structlog = "^23.2.0"
+sentry-sdk = {extras = ["fastapi"], version = "^1.39.2"}
+prometheus-client = "^0.19.0"
+
+# Cloud Services
+supabase = "^2.3.4"
+stripe = "^7.8.0"
+boto3 = "^1.34.0"
+google-cloud-storage = "^2.10.0"
+
+# Social Media APIs
+tweepy = "^4.14.0"
+facebook-sdk = "^3.1.0"
+google-api-python-client = "^2.111.0"
+
+# Utilities
+python-slugify = "^8.0.1"
+python-dateutil = "^2.8.2"
+pytz = "^2023.3"
+click = "^8.1.7"
+rich = "^13.7.0"
+typer = "^0.9.0"
+
+[tool.poetry.group.dev.dependencies]
+# Testing
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+httpx = "^0.26.0"
+factory-boy = "^3.3.0"
+faker = "^21.0.0"
+
+# Code Quality
+black = "^23.11.0"
+isort = "^5.13.2"
+flake8 = "^6.1.0"
+mypy = "^1.7.1"
+bandit = "^1.7.5"
+safety = "^2.3.5"
+pre-commit = "^3.6.0"
+
+# Development Tools
+ipython = "^8.18.1"
+jupyter = "^1.0.0"
+watchdog = "^3.0.0"
+python-dotenv = "^1.0.0"
+
+# Documentation
+mkdocs = "^1.5.3"
+mkdocs-material = "^9.4.14"
+mkdocstrings = {extras = ["python"], version = "^0.24.0"}
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.3"
+pytest-asyncio = "^0.21.1"
+pytest-cov = "^4.1.0"
+pytest-mock = "^3.12.0"
+pytest-xdist = "^3.5.0"
+coverage = "^7.3.2"
+testcontainers = "^3.7.1"
+
+[tool.poetry.scripts]
+agenticai = "agenticai.cli:main"
+start-api = "agenticai.api.main:start"
+start-worker = "agenticai.workers.main:start"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["agenticai"]
+known_third_party = ["fastapi", "pydantic", "sqlalchemy"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "crewai.*",
+    "guidance.*",
+    "moviepy.*",
+    "cv2.*",
+    "selenium.*",
+    "tweepy.*",
+    "facebook.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "ai: marks tests that require AI services",
+    "gpu: marks tests that require GPU",
+]
+
+[tool.coverage.run]
+source = ["agenticai"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__init__.py",
+    "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "*/tests/*"]
+skips = ["B101", "B601"]

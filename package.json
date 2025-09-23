@@ -1,0 +1,91 @@
+{
+  "name": "agenticai-lab",
+  "version": "0.1.0",
+  "description": "AI-Powered Content Creation Platform",
+  "private": true,
+  "workspaces": [
+    "web",
+    "docs"
+  ],
+  "engines": {
+    "node": ">=20.10.0",
+    "pnpm": ">=8.10.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:web\" \"pnpm run dev:worker\"",
+    "dev:api": "cd api && poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:web": "cd web && pnpm run dev",
+    "dev:worker": "cd workflows && poetry run python -m temporalio.worker --task-queue agenticai-tasks",
+    "build": "pnpm run build:web",
+    "build:web": "cd web && pnpm run build",
+    "start": "pnpm run start:web",
+    "start:web": "cd web && pnpm run start",
+    "test": "pnpm run test:web && pnpm run test:api",
+    "test:web": "cd web && pnpm run test",
+    "test:api": "poetry run pytest",
+    "lint": "pnpm run lint:web && pnpm run lint:api",
+    "lint:web": "cd web && pnpm run lint",
+    "lint:api": "poetry run flake8 && poetry run mypy .",
+    "format": "pnpm run format:web && pnpm run format:api",
+    "format:web": "cd web && pnpm run format",
+    "format:api": "poetry run black . && poetry run isort .",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:build": "docker-compose build",
+    "db:migrate": "cd api && poetry run alembic upgrade head",
+    "db:migration": "cd api && poetry run alembic revision --autogenerate",
+    "db:reset": "cd api && poetry run alembic downgrade base && poetry run alembic upgrade head",
+    "setup": "pnpm install && poetry install && pnpm run docker:up && sleep 30 && pnpm run db:migrate",
+    "clean": "pnpm run docker:down && rm -rf node_modules && rm -rf web/node_modules && rm -rf .next && rm -rf web/.next && rm -rf dist && rm -rf build",
+    "security": "pnpm audit && poetry run safety check && poetry run bandit -r .",
+    "docs:dev": "cd docs && pnpm run dev",
+    "docs:build": "cd docs && pnpm run build",
+    "typecheck": "cd web && pnpm run typecheck",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "concurrently": "^8.2.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "cd web && pnpm run lint:fix",
+      "cd web && pnpm run format"
+    ],
+    "*.{py}": [
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8"
+    ],
+    "*.{md,json,yaml,yml}": [
+      "prettier --write"
+    ]
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  },
+  "keywords": [
+    "ai",
+    "content-creation",
+    "automation",
+    "agents",
+    "llm",
+    "youtube",
+    "tiktok",
+    "social-media"
+  ],
+  "author": "AgenticAI Lab Team",
+  "license": "MIT",
+  "homepage": "https://github.com/yourusername/AgenticAILab",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/AgenticAILab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/AgenticAILab/issues"
+  }
+}

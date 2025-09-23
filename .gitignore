@@ -1,0 +1,64 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+.venv/
+venv/
+.env
+.env.local
+.env.production
+
+# Database
+data/
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Models (too large for git)
+models/ollama/
+models/cache/
+models/whisper/
+models/xtts/
+models/sdxl/
+models/stabilityai_stable-diffusion-xl-base-1.0/
+
+# Storage
+storage/
+temp/
+
+# Docker volumes
+data/postgres/
+data/redis/
+data/qdrant/
+data/minio/
+data/rabbitmq/
+data/influxdb/
+data/prometheus/
+data/grafana/
