@@ -40,22 +40,15 @@ export default function DashboardPage() {
 
   const fetchData = async () => {
     try {
-      // Mock data for now - backend is having issues
-      const mockAgents = [
-        {"id": "mistral", "name": "Mistral 7B", "status": "ready"},
-        {"id": "codellama", "name": "Code Llama 13B", "status": "ready"},
-        {"id": "llama", "name": "Llama 3.2 3B", "status": "ready"},
-        {"id": "research", "name": "Research Agent", "status": "ready"}
-      ]
-      
-      const mockJobs = [
-        {"id": "job_001", "type": "content_creation", "status": "completed"},
-        {"id": "job_002", "type": "video_generation", "status": "processing"},
-        {"id": "job_003", "type": "content_creation", "status": "completed"}
-      ]
-      
-      setAgents(mockAgents)
-      setJobs(mockJobs)
+          // Backend is now working on port 8002! 🎉
+          const agentsResponse = await fetch('http://localhost:8002/api/v1/agents')
+          const jobsResponse = await fetch('http://localhost:8002/api/v1/jobs')
+          
+          const agentsData = await agentsResponse.json()
+          const jobsData = await jobsResponse.json()
+          
+          setAgents(agentsData.agents || [])
+          setJobs(jobsData.jobs || [])
     } catch (error) {
       console.error('Error fetching data:', error)
     } finally {
@@ -74,28 +67,38 @@ export default function DashboardPage() {
     
     setIsCreatingJob(true)
     
-    // Simulate API call with mock response
-    setTimeout(() => {
-      const mockResponse = {
-        id: `job_${Date.now()}`,
-        status: 'completed',
-        type: 'content_creation',
-        content: `🤖 AI Generated Content for: "${jobPrompt}"\n\nThis is a demo response! Your AgenticAI Lab system would normally connect to the Mistral 7B model running in Docker to generate real AI content. The infrastructure is set up with:\n\n• Ollama container with 3 LLM models\n• PostgreSQL + Redis + Qdrant databases\n• FastAPI backend (having connection issues)\n• Next.js frontend (working perfectly!)\n\nOnce the backend is stable, you'll get real AI-generated content here!`,
-        model: 'mistral:7b (simulated)'
-      }
-      
-      alert(`🎉 Job Completed!\n\nPrompt: ${jobPrompt}\n\nContent: ${mockResponse.content.substring(0, 150)}...`)
-      
-      // Add to jobs list
-      const newJob = {
-        id: mockResponse.id,
-        type: 'content_creation', 
-        status: 'completed'
-      }
-      setJobs(prev => [newJob, ...prev])
-      setJobPrompt('')
-      setIsCreatingJob(false)
-    }, 2000) // 2 second delay to simulate processing
+        try {
+          // Real API call to working backend! 🚀
+          const response = await fetch('http://localhost:8002/api/v1/jobs', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              type: 'content_creation',
+              prompt: jobPrompt
+            })
+          })
+          
+          const result = await response.json()
+          
+          alert(`🎉 Backend Fixed! Job Completed!\n\nPrompt: ${jobPrompt}\n\nResponse: ${result.content?.substring(0, 200)}...`)
+          
+          // Add to jobs list
+          const newJob = {
+            id: result.id,
+            type: result.type,
+            status: result.status
+          }
+          setJobs(prev => [newJob, ...prev])
+          setJobPrompt('')
+          
+        } catch (error) {
+          console.error('Error creating job:', error)
+          alert('Error creating job. Please check console.')
+        } finally {
+          setIsCreatingJob(false)
+        }
   }
 
   const getStatusIcon = (status: string) => {
