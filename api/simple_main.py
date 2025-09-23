@@ -30,6 +30,21 @@ async def root():
 async def health():
     return {"status": "healthy", "version": "0.1.0"}
 
+@app.get("/health/detailed")
+async def detailed_health():
+    """Comprehensive system health check"""
+    from api.health_check import health_checker
+    
+    try:
+        health_data = await health_checker.check_all_services()
+        return health_data
+    except Exception as e:
+        return {
+            "overall_status": "unhealthy",
+            "error": str(e),
+            "timestamp": "2025-01-01T00:00:00Z"
+        }
+
 @app.get("/api/v1/agents")
 async def list_agents():
     return {
