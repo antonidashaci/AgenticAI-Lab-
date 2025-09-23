@@ -12,7 +12,7 @@
     "pnpm": ">=8.10.0"
   },
   "scripts": {
-    "dev": "concurrently \"pnpm run dev:api\" \"pnpm run dev:web\" \"pnpm run dev:worker\"",
+    "dev": "concurrently \"python api/fixed_backend.py\" \"pnpm run dev:web\"",
     "dev:api": "cd api && poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000",
     "dev:web": "cd web && pnpm run dev",
     "dev:worker": "cd workflows && poetry run python -m temporalio.worker --task-queue agenticai-tasks",

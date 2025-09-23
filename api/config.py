@@ -4,15 +4,36 @@ Configuration Management
 Centralized configuration using Pydantic Settings.
 """
 
-from pydantic_settings import BaseSettings
-from pydantic import Field, validator
+try:
+    from pydantic_settings import BaseSettings, SettingsConfigDict
+    PYDANTIC_V2 = True
+except ImportError:
+    from pydantic import BaseSettings
+    SettingsConfigDict = None
+    PYDANTIC_V2 = False
+
+from pydantic import Field
 from typing import List, Optional
 import os
 from functools import lru_cache
 
+# Import validators based on Pydantic version
+if PYDANTIC_V2:
+    from pydantic import field_validator
+else:
+    from pydantic import validator
+
 
 class Settings(BaseSettings):
     """Application settings."""
+    
+    # Pydantic v2 configuration (only if v2 is available)
+    if PYDANTIC_V2 and SettingsConfigDict:
+        model_config = SettingsConfigDict(
+            env_file=".env",
+            env_file_encoding="utf-8",
+            case_sensitive=True
+        )
     
     # Environment
     NODE_ENV: str = Field(default="development")
@@ -22,7 +43,7 @@ class Settings(BaseSettings):
     
     # API Configuration
     API_HOST: str = Field(default="localhost")
-    API_PORT: int = Field(default=8000)
+    API_PORT: int = Field(default=8002)  # Updated to match current running backend
     API_WORKERS: int = Field(default=1)
     API_RELOAD: bool = Field(default=True)
     
@@ -133,24 +154,46 @@ class Settings(BaseSettings):
     CACHE_TTL: int = Field(default=3600)
     GPU_MEMORY_FRACTION: float = Field(default=0.8)
     
-    @validator('CORS_ORIGINS', pre=True)
-    def parse_cors_origins(cls, v):
-        """Parse CORS origins from string or list."""
-        if isinstance(v, str):
-            return [origin.strip() for origin in v.split(',')]
-        return v
+    # Pydantic v1 validators
+    if not PYDANTIC_V2:
+        @validator('CORS_ORIGINS', pre=True)
+        def parse_cors_origins_v1(cls, v):
+            """Parse CORS origins from string or list (Pydantic v1)."""
+            if isinstance(v, str):
+                return [origin.strip() for origin in v.split(',')]
+            return v
+        
+        @validator('ALLOWED_HOSTS', pre=True)
+        def parse_allowed_hosts_v1(cls, v):
+            """Parse allowed hosts from string or list (Pydantic v1)."""
+            if isinstance(v, str):
+                return [host.strip() for host in v.split(',')]
+            return v
     
-    @validator('ALLOWED_HOSTS', pre=True)
-    def parse_allowed_hosts(cls, v):
-        """Parse allowed hosts from string or list."""
-        if isinstance(v, str):
-            return [host.strip() for host in v.split(',')]
-        return v
+    # Pydantic v2 validators
+    if PYDANTIC_V2:
+        @field_validator('CORS_ORIGINS', mode='before')
+        @classmethod
+        def parse_cors_origins_v2(cls, v):
+            """Parse CORS origins from string or list (Pydantic v2)."""
+            if isinstance(v, str):
+                return [origin.strip() for origin in v.split(',')]
+            return v
+        
+        @field_validator('ALLOWED_HOSTS', mode='before')
+        @classmethod
+        def parse_allowed_hosts_v2(cls, v):
+            """Parse allowed hosts from string or list (Pydantic v2)."""
+            if isinstance(v, str):
+                return [host.strip() for host in v.split(',')]
+            return v
     
-    class Config:
-        env_file = ".env.local"
-        env_file_encoding = "utf-8"
-        case_sensitive = True
+    # Pydantic v1 configuration (only if v1 is being used)
+    if not PYDANTIC_V2:
+        class Config:
+            env_file = ".env.local"
+            env_file_encoding = "utf-8"
+            case_sensitive = True
 
 
 @lru_cache()
